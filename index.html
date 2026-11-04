@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1,user-scalable=no">
+  <meta name="theme-color" content="#070e21">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="M&D Racing">
+  <meta name="description" content="Moksha & Duvi hand-controlled split-screen racing">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="assets/icon.svg">
+  <link rel="apple-touch-icon" href="assets/icon-192.png">
+  <link rel="stylesheet" href="styles.css">
+  <title>Moksha & Duvi | Motion Racing</title>
+</head>
+<body>
+  <canvas id="game" aria-label="Racing game canvas"></canvas>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <div id="hud" class="hidden">
+    <div id="raceLabel">🏁 MOTION GRAND PRIX</div>
+    <button id="pauseBtn" class="hud-button" aria-label="Pause or resume">Ⅱ</button>
+  </div>
+  <section id="menu" class="overlay">
+    <div class="menu-card">
+      <div class="eyebrow">MOKSHA × DUVI PRESENT</div>
+      <h1>ULTIMATE <span>MOTION RACING</span></h1>
+      <p class="subtitle">Race together. Drive with your hands.</p>
+      <div class="pill-row"><span>🏎 3D-STYLE</span><span>✋ HAND TRACKING</span><span>🏆 SPLIT-SCREEN</span></div>
+      <div class="group"><strong>RACE MODE</strong><div class="select-row"><button data-mode="solo" class="selected">1 PLAYER</button><button data-mode="duo">2 PLAYERS</button></div></div>
+      <div class="group" id="whoGroup"><strong>YOUR DRIVER</strong><div class="select-row"><button data-driver="Moksha" class="selected">MOKSHA</button><button data-driver="Duvi">DUVI</button></div></div>
+      <div class="group"><strong>TRACK</strong><div class="select-row"><button data-track="coast" class="selected">🌊 COAST</button><button data-track="neon">🌃 NEON</button><button data-track="desert">🏜 DESERT</button></div></div>
+      <div class="group"><strong>CONTROL MODE</strong><div class="select-row"><button data-control="touch" class="selected">📱 TOUCH</button><button data-control="camera">📷 CAMERA</button></div><small>Start in Touch mode to verify gameplay. Camera mode asks permission and loads AI tracking over the internet.</small></div>
+      <div class="button-row"><button id="settingsBtn" class="secondary">⚙ SETTINGS</button><button id="calibrateBtn" class="secondary">✋ CALIBRATE</button></div>
+      <button id="startBtn" class="primary full">START YOUR ENGINES →</button>
+      <div class="note">Rotate to landscape for the best two-player experience. Camera control needs HTTPS or localhost.</div>
+    </div>
+  </section>
+  <section id="settingsPanel" class="overlay hidden"><div class="menu-card small-card"><h2>GAME SETTINGS</h2>
+    <label>Graphics <select id="quality"><option value="low">Low</option><option value="balanced" selected>Balanced</option><option value="high">High</option></select></label>
+    <label>Sensitivity <input id="sensitivity" type="range" min="0.5" max="2.2" value="1.2" step="0.1"><output id="sensitivityOut">1.2</output></label>
+    <label>Sound volume <input id="volume" type="range" min="0" max="1" value="0.5" step="0.1"><output id="volumeOut">50%</output></label>
+    <label class="check"><input id="showDebug" type="checkbox"> Show camera hand landmarks</label>
+    <p class="note">Controls and player calibration are saved on this device.</p><button class="primary full backBtn">SAVE & BACK</button>
+  </div></section>
+  <section id="calibrationPanel" class="overlay hidden"><div class="menu-card calib-card"><h2>CAMERA CALIBRATION</h2>
+    <p class="subtitle">Place the iPhone securely so the front camera sees both players' hands. No faces or identity recognition.</p>
+    <div id="cameraBox"><video id="cameraVideo" autoplay muted playsinline></video><canvas id="landmarks"></canvas><div id="zoneLines"><span>MOKSHA</span><span>DUVI</span></div></div>
+    <div id="cameraStatus" class="note" role="status">Camera not started.</div>
+    <div class="button-row"><button id="enableCamera" class="secondary">START CAMERA</button><button id="saveMoksha" class="secondary">SET MOKSHA</button><button id="saveDuvi" class="secondary">SET DUVI</button></div>
+    <p class="note">Each player holds one open hand at the comfortable neutral steering position in their own half of the camera preview. If a hand is lost, that car coasts and recenters steering; touch controls remain available.</p>
+    <button id="calibBack" class="primary full">BACK TO MENU</button>
+  </div></section>
+  <section id="pausePanel" class="overlay hidden"><div class="menu-card small-card"><h2>RACE PAUSED</h2><button id="resumeBtn" class="primary full">RESUME</button><button id="restartBtn" class="secondary full">RESTART RACE</button><button id="quitBtn" class="secondary full">MAIN MENU</button></div></section>
+  <section id="resultsPanel" class="overlay hidden"><div class="menu-card small-card"><div class="eyebrow">FINISH LINE</div><h2 id="resultTitle">🏆 WINNER</h2><div id="resultSummary"></div><button id="againBtn" class="primary full">RACE AGAIN</button><button id="resultMenuBtn" class="secondary full">MAIN MENU</button></div></section>
+  <div id="touchControls" class="hidden" aria-label="Touch racing controls"></div>
+  <script type="module" src="app.js"></script>
+</body></html>
