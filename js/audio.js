@@ -1,0 +1,7 @@
+export class Sound{
+ constructor(){this.ctx=null;this.osc=null;this.gain=null;this.enabled=true;}
+ start(){if(!this.enabled)return;try{this.ctx=this.ctx||new (window.AudioContext||window.webkitAudioContext)();this.ctx.resume();if(this.osc)return;this.osc=this.ctx.createOscillator();this.osc.type='sawtooth';const filter=this.ctx.createBiquadFilter();filter.type='lowpass';filter.frequency.value=330;this.gain=this.ctx.createGain();this.gain.gain.value=.0001;this.osc.connect(filter);filter.connect(this.gain);this.gain.connect(this.ctx.destination);this.osc.start();}catch{}}
+ engine(speed,boost){if(!this.osc||!this.ctx)return;const t=this.ctx.currentTime;this.osc.frequency.setTargetAtTime(42+speed*2.1+(boost?55:0),t,.06);this.gain.gain.setTargetAtTime(Math.min(.11,.018+speed*.001),t,.12);}
+ blip(freq=480,duration=.17){if(!this.ctx)return;try{const osc=this.ctx.createOscillator(),gain=this.ctx.createGain();osc.type='triangle';osc.frequency.setValueAtTime(freq,this.ctx.currentTime);osc.frequency.exponentialRampToValueAtTime(Math.max(50,freq*.55),this.ctx.currentTime+duration);gain.gain.setValueAtTime(.10,this.ctx.currentTime);gain.gain.exponentialRampToValueAtTime(.001,this.ctx.currentTime+duration);osc.connect(gain).connect(this.ctx.destination);osc.start();osc.stop(this.ctx.currentTime+duration+.01);}catch{}}
+ stop(){try{this.osc?.stop();this.osc?.disconnect();}catch{}this.osc=null;this.gain=null;}
+}
